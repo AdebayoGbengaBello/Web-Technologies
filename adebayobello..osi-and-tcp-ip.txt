@@ -1,0 +1,1 @@
+There are 7 layers in the OSI model, and 4 in the TCP/IP model. I prefer the OSI model. 
