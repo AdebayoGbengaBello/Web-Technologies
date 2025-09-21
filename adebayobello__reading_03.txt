@@ -1,0 +1,1 @@
+My favorite command was ipconfig. I’ve always known to go to settings and see my IP and MAC address, but ipconfig allows me to see thing s I’ve never even thought about like what subnet mask I’m using, along with the potential connections I could use with my laptop, such as my ethernet.
