@@ -1,0 +1,44 @@
+'Adebayo Bello 21st September 2025
+
+@startuml webtech-practice-02-class-diagram.puml
+left to right direction
+actor Student as s
+actor FacultyIntern as fi
+actor Teacher as t
+
+rectangle "Attendance Management System" {
+    usecase "Create Account" as u1
+    usecase "Login" as u2
+    usecase "Create Course" as fu1
+    usecase "Add Students to Course" as fu2
+    usecase "Create/Manage Sessions" as fu3
+    usecase "Mark Attendance" as fu4
+    usecase "Approve Student Requests" as fu5
+    usecase "View Reports (FI)" as fu6
+    usecase "Join Course (Request)" as su1
+    usecase "Mark Attendance (with Code)" as su2
+    usecase "View Attendance Reports" as su3
+    usecase "Manage Courses" as t1
+    usecase "Add Faculty Interns" as t2
+    usecase "View Reports (Teacher)" as t3
+    s-->u1
+    t-->u1
+    fi-->u1
+    s-->u2
+    t-->u2
+    fi-->u2
+    s-->su1
+    s-->su3
+    fi-->fu1
+    fi-->fu2
+    fi-->fu3
+    fi-->fu4
+    fi-->fu5
+    fi-->fu6
+    t-->t1
+    t-->t2
+    t-->t3
+}
+
+@enduml
+

@@ -1,0 +1,12 @@
+'Adebayo Bello 21st September 2025
+@startuml webtech-practice-02-class-diagram.puml
+class "Login Page" as Login
+class "Teacher Dashboard" as TeacherDB
+class "FI Dashboard" as FIDB
+class "Student Dashboard" as StudentDB
+
+Login --> TeacherDB : "Teacher Login"
+Login --> FIDB : "FI Login"
+Login --> StudentDB : "Student Login"
+
+@enduml

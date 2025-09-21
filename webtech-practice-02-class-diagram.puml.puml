@@ -1,0 +1,47 @@
+'Adebayo Bello 21st September 2025
+
+@startuml webtech-practice-02-class-diagram.puml
+class User {
+    +userid: Int
+    +name: String
+    +email: String
+    +role: String
+    +password: String
+}
+
+class Courses{
+    +courseid: Int
+    +name: String
+    +teacherID: String
+}
+
+class FacultyInterns {
+    +fid: Int
+    +courseid: Int
+}
+
+class Students {
+    +sid: Int
+    +courseid: Int
+    +status: ("Pending", "Approved")
+}
+
+class Sessions {
+    +sessionid: Int
+    +courseid: Int
+    +date: Date
+    +code: String
+}
+
+class Teachers {
+    +teacherid: Int
+    +courseid: Int
+}
+
+class Attendance {
+    +attendanceid: Int
+    +sessionid: Int
+    +studentid: Int
+    +status: ("Present", "Absent")
+}
+@enduml
