@@ -1,0 +1,90 @@
+body { 
+    font-family: Arial, sans-serif; 
+    margin: 0; 
+    padding: 0; 
+    background-color: #f0f0f0; 
+}
+.header { 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+    color: white; 
+    padding: 20px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+}
+.logout-btn { 
+    background: white; 
+    color: #667eea; 
+    padding: 10px 20px; 
+    border: none; 
+    border-radius: 5px; 
+    text-decoration: none; 
+}
+.container { 
+    display: flex; 
+    flex-direction: column; 
+}
+main { 
+    flex: 1; 
+    padding: 30px; 
+}
+.session-card { 
+    background: white; 
+    padding: 20px; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+    margin-bottom: 20px; 
+}
+.session-card h3 { 
+    color: #5050d8; 
+}
+.session-type-badge { 
+    display: inline-block; 
+    padding: 4px 10px; 
+    border-radius: 12px; 
+    font-size: 12px; 
+    font-weight: bold; 
+    margin-left: 10px; 
+}
+.type-Lab, .type-Practical { 
+    background-color: #e3f2fd; 
+    color: #1976d2; 
+}
+.type-Lecture { 
+    background-color: #e8f5e8; 
+    color: #2e7d32; 
+}
+.session-notes { 
+    background-color: #fff9c4; 
+    border-left: 3px solid #fdd835; 
+    padding: 10px; 
+    margin-top: 10px; 
+    border-radius: 4px; 
+}
+
+@media (min-width: 768px) {
+    .container { 
+        flex-direction: row; 
+    }
+    aside { 
+        width: 200px; 
+        background-color: #5050d8;
+         min-height: 100vh; 
+        padding: 20px; 
+    }
+    nav { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 10px; 
+    }
+    nav a { 
+        color: white; 
+        text-decoration: none; 
+        padding: 10px; 
+        border-radius: 5px; 
+        transition: background-color 0.3s; 
+    }
+    nav a:hover { 
+        background-color: rgba(255, 255, 255, 0.2); 
+    }
+}
