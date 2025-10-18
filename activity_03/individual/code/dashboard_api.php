@@ -11,7 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 require_once 'config.php';
 
-// Check if user is logged in
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -31,7 +30,6 @@ switch ($method) {
     case 'GET':
         $response = [];
         
-        // Get user's enrolled courses count
         $stmt = $conn->prepare("
             SELECT COUNT(*) as course_count, 
                    AVG(e.progress_percentage) as avg_progress,
@@ -50,7 +48,6 @@ switch ($method) {
             'totalHours' => $summary['total_hours'] ?? 0
         ];
         
-        // Get upcoming sessions (MODIFIED QUERY)
         $stmt = $conn->prepare("
             SELECT s.sessionId, s.sessionTitle, s.sessionDate, s.sessionTime, s.sessionType, s.notes, c.courseName 
             FROM sessions s 

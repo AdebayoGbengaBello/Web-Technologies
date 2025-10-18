@@ -9,7 +9,6 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 $user_id = $_SESSION['user_id'];
 $user_name = $_SESSION['user_name'];
 
-// Fetch user's courses from db
 $conn = getDBConnection();
 $stmt = $conn->prepare("
     SELECT c.courseId, c.courseName, c.courseCode, c.description, c.instructorName, 
@@ -30,6 +29,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="courses.css">
     <title>My Courses - Student Dashboard</title>
 </head>
 <body>
