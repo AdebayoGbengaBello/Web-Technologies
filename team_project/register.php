@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "Password must be at least 8 characters and include an uppercase letter, a lowercase letter, and a number.";
     }
 
-    if (!empty($errors)) {
+    if (empty($errors)) {
         $conn = getDBConnection();
         
         $check_sql = "SELECT developer_id FROM Developers WHERE email = ?";
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if (!empty($success)): ?>
             <div class="success"><?php echo htmlspecialchars($success); ?></div>
         <?php endif; ?>
-            <form method="POST">
+            <form method="POST" action="register.php">
                 <label for="company_name">Company Name:</label>
                 <input 
                     type="text" 
