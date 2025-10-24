@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="success"><?php echo htmlspecialchars($success); ?></div>
         <?php endif; ?>
         
-        <form method="POST" action="login.php">
+        <form method="POST" action="login_developer.php">
             <div class="form-group">
                 <label for="email">Email Address</label>
                 <input 
@@ -111,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
         
         <div class="register-link">
-            Don't have an account? <a href="register.php">Register here</a>
+            Don't have an account? <a href="register_developer.php">Register here</a>
         </div>
     </div>
 </body>
