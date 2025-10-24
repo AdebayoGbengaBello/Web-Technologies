@@ -8,21 +8,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $company_name = trim($_POST['company_name'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $phone = trim($_POST['phone'] ?? '');
-    $password = $_POST['password'] ?? '';
-    $confirm_password = $_POST['confirm_password'] ?? '';
-    
+    $password = trim($_POST['password'] ?? '');
+    $confirm_password = trim($_POST['confirm_password'] ?? '');
+
     $errors = [];
     if (empty($company_name) || empty($email) || empty($phone) || empty($password)) {
         $errors[] = "All fields are required.";
     }
-    if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = "Invalid email format.";
     } 
     if ($password !== $confirm_password) {
         $errors[] = "Passwords do not match.";
     }
     if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/', $password)) {
-        $errors[] = "Password must be at least 8 characters and include an uppercase letter, a lowercase letter, and a number.";
+        $errors[] = "Password must be at least 8 characters 
+        and include an uppercase letter, a lowercase letter, and a number.";
     }
 
     if (empty($errors)) {
@@ -64,12 +65,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <body>
         <main>
             <?php if (!empty($error)): ?>
-            <div class="error"><?php echo htmlspecialchars($error); ?></div>
-        <?php endif; ?>
+                <div class="error"><?php echo htmlspecialchars($error); ?></div>
+            <?php endif; ?>
         
-        <?php if (!empty($success)): ?>
-            <div class="success"><?php echo htmlspecialchars($success); ?></div>
-        <?php endif; ?>
+            <?php if (!empty($success)): ?>
+                <div class="success"><?php echo htmlspecialchars($success); ?></div>
+            <?php endif; ?>
             <form method="POST" action="register_developer.php">
                 <label for="company_name">Company Name:</label>
                 <input 
@@ -96,7 +97,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     id="password" 
                     name="password" 
                     pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
-                    title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters" 
+                    title="Must contain at least one  number and one uppercase and lowercase letter, 
+                    and at least 8 or more characters" 
                     aria-required="true" required>
 
                 <label for="confirm_password">Confirm Password:</label>
