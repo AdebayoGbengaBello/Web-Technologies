@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php if (!empty($success)): ?>
             <div class="success"><?php echo htmlspecialchars($success); ?></div>
         <?php endif; ?>
-            <form method="POST" action="register.php">
+            <form method="POST" action="register_developer.php">
                 <label for="company_name">Company Name:</label>
                 <input 
                     type="text" 
