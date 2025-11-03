@@ -1,4 +1,3 @@
-
 <?php
 require_once 'config.php';
 
@@ -20,33 +19,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Password is required";
     } else {
         $conn = getDBConnection();
-        
         $sql = "SELECT developer_id, company_name, email, password
                 FROM developers 
                 WHERE email = ? 
                 LIMIT 1";
-        
         $stmt = $conn->prepare($sql);
         
         if ($stmt) {
             $stmt->bind_param("s", $email);
-            
             $stmt->execute();
-            
             $result = $stmt->get_result();
             
             if ($result->num_rows === 1) {
                 $user = $result->fetch_assoc();
                 
                 if ($password === $user['password']) {
-                    session_regenerate_id(true);
-                    
+                    session_regenerate_id(true);  
                     $_SESSION['user_id'] = $user['developer_id'];
                     $_SESSION['user_email'] = $user['email'];
                     $_SESSION['user_name'] = $user['company_name'];
                     $_SESSION['logged_in'] = true;
                     $_SESSION['login_time'] = time();
-                        
                     header("Location: dashboard.php");
                     exit();
                     
