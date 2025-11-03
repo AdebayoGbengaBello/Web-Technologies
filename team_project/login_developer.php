@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($result->num_rows === 1) {
                 $user = $result->fetch_assoc();
                 
-                if ($password === $user['password']) {
+                if (password_verify($password, $user['password'])) {
                     session_regenerate_id(true);  
                     $_SESSION['user_id'] = $user['developer_id'];
                     $_SESSION['user_email'] = $user['email'];
@@ -64,10 +64,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Student Dashboard</title>
+    <title>Login - Developer Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="login-container">
+    <div class="form-container">
         <h2>Developer Login</h2>
         
         <?php if (!empty($error)): ?>

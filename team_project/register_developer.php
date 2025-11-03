@@ -3,6 +3,9 @@ require_once 'config.php';
 
 $error = '';
 $success = '';
+$company_name = '';
+$email = '';
+$phone = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $company_name = trim($_POST['company_name'] ?? '');
@@ -22,8 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "Passwords do not match.";
     }
     if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/', $password)) {
-        $errors[] = "Password must be at least 8 characters 
-        and include an uppercase letter, a lowercase letter, and a number.";
+        $errors[] = "Password must be at least 8 characters and include an uppercase letter, a lowercase letter, and a number.";
     }
 
     if (empty($errors)) {
@@ -38,13 +40,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($check_result->num_rows > 0) {
             $error = "Email already registered.";
         } else {
+            $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+            
             $sql = "INSERT INTO Developers (company_name, email, phone, password) 
                     VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ssss", $company_name, $email, $phone, $password);
+            $stmt->bind_param("ssss", $company_name, $email, $phone, $hashed_password);
             
             if ($stmt->execute()) {
-                $success = "Registration successful! You can now login.";
+                $success = "Registration successful! You can now <a href='login_developer.php'>login here</a>.";
                 $company_name = $email = $phone = '';
             } else {
                 $error = "Registration failed. Please try again.";
@@ -53,61 +57,85 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $check_stmt->close();
         $conn->close();
+    } else {
+        $error = implode("<br>", $errors);
     }
 }
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Developer Register</title>
-    <body>
-        <main>
-            <?php if (!empty($error)): ?>
-                <div class="error"><?php echo htmlspecialchars($error); ?></div>
-            <?php endif; ?>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Developer Registration</h2>
         
-            <?php if (!empty($success)): ?>
-                <div class="success"><?php echo htmlspecialchars($success); ?></div>
-            <?php endif; ?>
-            <form method="POST" action="register_developer.php">
+        <?php if (!empty($error)): ?>
+            <div class="error"><?php echo $error;?></div>
+        <?php endif; ?>
+    
+        <?php if (!empty($success)): ?>
+            <div class="success"><?php echo $success;?></div>
+        <?php endif; ?>
+        
+        <form method="POST" action="register_developer.php" novalidate>
+            <div class="form-group">
                 <label for="company_name">Company Name:</label>
                 <input 
                     type="text" 
                     id="company_name" 
                     name="company_name" 
+                    value="<?php echo htmlspecialchars($company_name); ?>"
                     aria-required="true" required>
-
+            </div>
+            
+            <div class="form-group">
                 <label for="email">Email:</label>
                 <input 
                     type="email" 
                     id="email" 
                     name="email" 
+                    value="<?php echo htmlspecialchars($email); ?>"
                     aria-required="true" required>
-
+            </div>
+            
+            <div class="form-group">
                 <label for="phone">Phone:</label>
                 <input type="text" 
                     id="phone" 
-                    name="phone" 
+                    name="phone"
+                    value="<?php echo htmlspecialchars($phone); ?>" 
                     aria-required="true" required>
-
+            </div>
+            
+            <div class="form-group">
                 <label for="password">Password:</label>
                 <input type="password" 
                     id="password" 
                     name="password" 
                     pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
-                    title="Must contain at least one  number and one uppercase and lowercase letter, 
-                    and at least 8 or more characters" 
+                    title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" 
                     aria-required="true" required>
-
+            </div>
+            
+            <div class="form-group">
                 <label for="confirm_password">Confirm Password:</label>
                 <input type="password" 
                     id="confirm_password" 
                     name="confirm_password" 
                     aria-required="true" required>
-                <button type="submit">Register</button>
-            </form>
-        </main>
-    </body>
+            </div>
+            
+            <button type="submit" class="btn">Register</button>
+        </form>
+         <div class="register-link">
+            Already have an account? <a href="login_developer.php">Login here</a>
+        </div>
+    </div>
+</body>
 </html>
