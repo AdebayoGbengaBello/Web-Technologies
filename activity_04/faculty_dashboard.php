@@ -24,6 +24,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['approve_request_id'])
     
     if ($update_stmt->execute()) {
         $update_stmt->close();
+        $enrolstmt = $conn->prepare("
+            INSERT INTO enrollment (student_id, course_id, course_name, student_name)
+            SELECT r.student_id, r.course_id, c.course_name, s.student_name
+            FROM requests r
+            JOIN courses c ON r.course_id = c.course_id
+            JOIN students s ON r.student_id = s.student_id
+            WHERE r.request_id = ? AND c.faculty_id = ?");
+        $enrolstmt->bind_param("ii", $request_id_to_approve, $user_id);
+        $enrolstmt->execute();
         $conn->close();
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
@@ -39,7 +48,7 @@ $stmt = $conn->prepare("
 ");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
-$result = $stmt->get_result();
+$result = $stmt->get_result();  
 $courses = $result->fetch_all(MYSQLI_ASSOC);
 
 $stmt->close();
@@ -58,8 +67,7 @@ $requests = $result->fetch_all(MYSQLI_ASSOC);
 
 $stmt->close();
 
-
-
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -74,6 +82,7 @@ $stmt->close();
     <nav>
         <a href="add_course.php">Add New Course</a>
         <a href="logout.php">Logout</a>
+        <a href="faculty_sessions.php">View Sessions</a>
     </nav>
     <div class="container">
         <header>

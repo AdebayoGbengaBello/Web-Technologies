@@ -32,6 +32,15 @@ $result = $stmt->get_result();
 $requests = $result->fetch_all(MYSQLI_ASSOC);
 
 $stmt->close();
+$stmtmt = $conn->prepare("
+    SELECT *
+    FROM enrollment
+    WHERE student_id = ?");
+$stmtmt->bind_param("i", $user_id);
+$stmtmt->execute();
+$result = $stmtmt->get_result();
+$enrollments = $result->fetch_all(MYSQLI_ASSOC);
+$stmtmt->close();
 $conn->close();
 ?>
 
@@ -80,6 +89,22 @@ $conn->close();
                             <?php foreach ($requests as $request): ?>
                                 <li>
                                     <strong><?php echo htmlspecialchars($request['course_name']); ?></strong> - Status: <?php echo $request['approved'] ? 'Approved' : 'Pending'; ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+                </div>
+            </section>
+            <section id="enrollmentsSection">
+                <h2>Your Courses</h2>
+                <div id="enrollmentsContainer">
+                    <?php if (empty($enrollments)): ?>
+                        <p>No enrollments found.</p>
+                    <?php else: ?>
+                        <ul>
+                            <?php foreach ($enrollments as $enrollment): ?>
+                                <li>
+                                    <strong><?php echo htmlspecialchars($enrollment['course_name']); ?></strong>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
