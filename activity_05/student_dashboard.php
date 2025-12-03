@@ -10,6 +10,7 @@ $user_id = $_SESSION['user_id'];
 $user_name = $_SESSION['user_name'];
 
 $conn = getDBConnection();
+
 $stmt = $conn->prepare("
     SELECT c.course_id, c.course_name, f.faculty_name
     FROM courses c
@@ -18,8 +19,9 @@ $stmt = $conn->prepare("
 $stmt->execute();
 $result = $stmt->get_result();
 $courses = $result->fetch_all(MYSQLI_ASSOC);
-
 $stmt->close();
+
+
 $stmt=$conn->prepare("
     SELECT r.course_id, c.course_name, r.student_id, r.approved
     FROM requests r
@@ -30,12 +32,10 @@ $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $requests = $result->fetch_all(MYSQLI_ASSOC);
-
 $stmt->close();
-$stmtmt = $conn->prepare("
-    SELECT *
-    FROM enrollment
-    WHERE student_id = ?");
+
+
+$stmtmt = $conn->prepare("SELECT * FROM enrollment WHERE student_id = ?");
 $stmtmt->bind_param("i", $user_id);
 $stmtmt->execute();
 $result = $stmtmt->get_result();
@@ -55,7 +55,10 @@ $conn->close();
 </head>
 <body>
     <nav>
-        <a href="add_request.php">Request To Join A Course</a>
+        <a href="student_dashboard.php">Dashboard</a>
+        <a href="add_request.php">Join Course</a>
+        <a href="student_mark_attendance.php">Mark Attendance</a>
+        <a href="student_reports.php">My Reports</a>
         <a href="logout.php">Logout</a>
     </nav>
     <div class="container">
@@ -63,22 +66,23 @@ $conn->close();
             <h1>Welcome, <?php echo htmlspecialchars($user_name); ?>!</h1>
         </header>
         <main>
-            <section id="coursesSection">
-                <h2>Available Courses</h2>
-                <div id="coursesContainer">
-                    <?php if (empty($courses)): ?>
-                        <p>No courses found. Please add a new course.</p>
+            <section id="enrollmentsSection">
+                <h2>Your Courses</h2>
+                <div id="enrollmentsContainer">
+                    <?php if (empty($enrollments)): ?>
+                        <p>No enrollments found.</p>
                     <?php else: ?>
                         <ul>
-                            <?php foreach ($courses as $course): ?>
+                            <?php foreach ($enrollments as $enrollment): ?>
                                 <li>
-                                    <strong><?php echo htmlspecialchars($course['course_name']); ?> - Faculty: <?php echo htmlspecialchars($course['faculty_name']); ?></strong>
+                                    <strong><?php echo htmlspecialchars($enrollment['course_name']); ?></strong>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
                     <?php endif; ?>
                 </div>
             </section>
+            
             <section id="requestsSection">
                 <h2>Your Requests</h2>
                 <div id="requestsContainer">
@@ -95,16 +99,17 @@ $conn->close();
                     <?php endif; ?>
                 </div>
             </section>
-            <section id="enrollmentsSection">
-                <h2>Your Courses</h2>
-                <div id="enrollmentsContainer">
-                    <?php if (empty($enrollments)): ?>
-                        <p>No enrollments found.</p>
+
+            <section id="coursesSection">
+                <h2>All Available Courses</h2>
+                <div id="coursesContainer">
+                    <?php if (empty($courses)): ?>
+                        <p>No courses found.</p>
                     <?php else: ?>
                         <ul>
-                            <?php foreach ($enrollments as $enrollment): ?>
+                            <?php foreach ($courses as $course): ?>
                                 <li>
-                                    <strong><?php echo htmlspecialchars($enrollment['course_name']); ?></strong>
+                                    <strong><?php echo htmlspecialchars($course['course_name']); ?> - Faculty: <?php echo htmlspecialchars($course['faculty_name']); ?></strong>
                                 </li>
                             <?php endforeach; ?>
                         </ul>
